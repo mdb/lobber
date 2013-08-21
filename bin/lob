@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'lob'
+Lob.upload(*ARGV)
