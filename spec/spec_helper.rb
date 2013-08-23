@@ -4,7 +4,9 @@ require 'simplecov'
 require 'rspec'
 SimpleCov.start
 
-require_relative '../lib/lob'
+require 'lob'
+require 'pry'
+binding.pry
 
 RSpec.configure do |config|
  #some (optional) config here

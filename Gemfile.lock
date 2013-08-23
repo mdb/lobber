@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     builder (3.2.2)
+    coderay (1.0.9)
     diff-lcs (1.2.4)
     excon (0.25.3)
     fog (1.14.0)
@@ -15,6 +16,14 @@ GEM
       nokogiri (~> 1.5)
       ruby-hmac
     formatador (0.2.4)
+    git (1.2.6)
+    jeweler (1.8.4)
+      bundler (~> 1.0)
+      git (>= 1.2.5)
+      rake
+      rdoc
+    json (1.8.0)
+    method_source (0.8.1)
     mime-types (1.24)
     mini_portile (0.5.1)
     multi_json (1.7.9)
@@ -25,7 +34,13 @@ GEM
       mini_portile (~> 0.5.0)
     nokogiri (1.6.0-java)
       mini_portile (~> 0.5.0)
+    pry (0.9.12.2)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rake (10.1.0)
+    rdoc (4.0.1)
+      json (~> 1.4)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -39,6 +54,7 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
+    slop (3.4.5)
 
 PLATFORMS
   java
@@ -47,6 +63,8 @@ PLATFORMS
 DEPENDENCIES
   bundler
   fog
+  jeweler
+  pry
   rake
   rspec
   simplecov
