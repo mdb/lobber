@@ -1,4 +1,5 @@
 require 'fog'
+require 'rake'
 
 module Lob
   class Uploader
@@ -20,7 +21,7 @@ module Lob
     end
 
     def directory_content
-      return FileList["#{directory}/**/*"].inject({}) do |hash, path|
+      return Rake::FileList["#{directory}/**/*"].inject({}) do |hash, path|
         if File.directory? path
           hash.update("#{path}/" => :directory)
         else
@@ -41,11 +42,11 @@ module Lob
       end
     end
 
-    def create_directory
+    def create_directory directory
       bucket.files.create(key: directory, public: true)
     end
 
-    def create_file
+    def create_file file
       bucket.files.create(key: file, public: true, body: File.open(file))
     end
 
