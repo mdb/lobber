@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'fog'
+gem 'thor'
 
 group :development do
   gem "rake"

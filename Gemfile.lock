@@ -90,6 +90,7 @@ GEM
     slop (3.4.6)
     spoon (0.0.4)
       ffi
+    thor (0.18.1)
 
 PLATFORMS
   java
@@ -103,3 +104,4 @@ DEPENDENCIES
   rake
   rspec
   simplecov
+  thor
