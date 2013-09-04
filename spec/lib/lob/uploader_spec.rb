@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe "Lob::Upload" do
+  let(:directory_name) { 'some_directory' }
+
   before :each do
     Fog.mock!
     @uploader = Lob::Uploader.new 'spec'
     @uploader.stub(:aws_access_key).and_return 'fake key'
     @uploader.stub(:aws_secret_key).and_return 'fake key'
-    @uploader.stub(:fog_directory).and_return 'fog directory'
+    @uploader.stub(:fog_directory).and_return directory_name
   end
 
   after :each do
@@ -59,16 +61,11 @@ describe "Lob::Upload" do
     end
   end
 
-  # pending
   describe "#bucket" do
-    context "its behavior when a @bucket instance variable has been defined" do
-      it "" do
-      end
-    end
-
-    context "its behavior when a @bucket instance variable has not been defined" do
-      it "" do
-      end
+    it "creates a bucket of the same name" do
+      expect(@uploader.s3.directories.get directory_name).to be_nil
+      @uploader.bucket
+      expect(@uploader.s3.directories.get directory_name).to_not be_nil
     end
   end
 
@@ -119,22 +116,16 @@ describe "Lob::Upload" do
     end
   end
 
-  # pending
   describe "#verify_env_variables" do
     context "when one of the required environment variables is absent" do
       before :each do
-        ENV.stub(:[]).and_return(nil)
-        ENV.stub(:[]).and_return(nil)
-        ENV.stub(:[]).and_return(nil)
+        ENV.stub(:[])
       end
 
-      xit "exists with an exit code of 1" do
-        lambda { @uploader.verify_env_variables }.should exit_with_code(1)
-      end
-
-      xit "it reports that the missing env variable is required" do
-        Kernel.should_receive(:puts).with 'AWS_ACCESS_KEY required'
-        lambda { @uploader.verify_env_variables }.call
+      it "exits with an exit code of 1 & reports that the missing environment variable is required" do
+        #Kernel.should_receive(:puts).with 'AWS_ACCESS_KEY required'
+        #TODO: how to test? maybe create errors.rb like bershelf
+        expect { @uploader.verify_env_variables }.to exit_with_code(1)
       end
     end
 
@@ -142,7 +133,7 @@ describe "Lob::Upload" do
       before :each do
         ENV.stub(:[]).with("AWS_SECRET_KEY").and_return 'secret key'
         ENV.stub(:[]).with("AWS_ACCESS_KEY").and_return 'access key'
-        ENV.stub(:[]).with("FOG_DIRECTORY").and_return 'fog directory'
+        ENV.stub(:[]).with("FOG_DIRECTORY").and_return directory_name
       end
 
       it "does not exit with an exit code of 1" do

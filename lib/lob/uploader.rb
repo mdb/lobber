@@ -11,11 +11,11 @@ module Lob
 
     def verify_env_and_upload
       verify_env_variables
-      upload directory
+      upload
     end
 
     def upload
-      directory_content(directory).each do |file, value|
+      directory_content.each do |file, value|
         create_file_or_directory(file, value)
       end
     end
