@@ -119,6 +119,7 @@ describe "Lob::Upload" do
     end
   end
 
+  # pending
   describe "#verify_env_variables" do
     context "when one of the required environment variables is absent" do
       before :each do
@@ -127,11 +128,11 @@ describe "Lob::Upload" do
         ENV.stub(:[]).and_return(nil)
       end
 
-      it "exists with an exit code of 1" do
+      xit "exists with an exit code of 1" do
         lambda { @uploader.verify_env_variables }.should exit_with_code(1)
       end
 
-      it "it reports that the missing env variable is required" do
+      xit "it reports that the missing env variable is required" do
         Kernel.should_receive(:puts).with 'AWS_ACCESS_KEY required'
         lambda { @uploader.verify_env_variables }.call
       end
