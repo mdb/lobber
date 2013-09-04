@@ -1,4 +1,9 @@
 #!/usr/bin/env ruby
 
+$: << File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
+
 require 'lob'
-Lob.upload(*ARGV)
+
+ARGV.unshift(:upload) if ARGV[0] && File.directory?(ARGV[0])
+
+Lob::CLI.start

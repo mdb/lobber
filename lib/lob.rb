@@ -1,5 +1,6 @@
 require 'lob/version'
 require 'lob/uploader'
+require 'lob/cli'
 
 module Lob
   def self.upload(directory)
