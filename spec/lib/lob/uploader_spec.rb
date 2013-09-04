@@ -52,6 +52,7 @@ describe "Lob::Upload" do
         "spec/lib/" => :directory,
         "spec/lib/lob/" => :directory,
         "spec/lib/lob/uploader_spec.rb" => "content",
+        "spec/lib/lob/cli_spec.rb" => "content",
         "spec/lib/lob_spec.rb" => "content",
         "spec/spec_helper.rb" => "content",
         "spec/support/" => :directory,
