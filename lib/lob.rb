@@ -1,3 +1,4 @@
+require 'lob/version'
 require 'lob/uploader'
 
 module Lob
