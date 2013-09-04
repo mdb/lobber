@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mdb/lob.png?branch=master)](https://travis-ci.org/mdb/lob)
+
 # Lob
 
 Quickly toss a directory to Amazon S3 from the command line.
