@@ -54,10 +54,7 @@ describe "Lob::Upload" do
         "spec/lib/lob/uploader_spec.rb" => "content",
         "spec/lib/lob/cli_spec.rb" => "content",
         "spec/lib/lob_spec.rb" => "content",
-        "spec/spec_helper.rb" => "content",
-        "spec/support/" => :directory,
-        "spec/support/matchers/" => :directory,
-        "spec/support/matchers/exit_with_code.rb" => "content"
+        "spec/spec_helper.rb" => "content"
       )
     end
   end
