@@ -7,9 +7,9 @@ describe Lob do
 
   describe ".upload" do
     it "verifies environment variables and uploads the directory and its contents to S3" do
-      uploader_stub = stub(Lob::Uploader)
-      Lob::Uploader.should_receive(:new).with('foo').and_return(uploader_stub)
-      uploader_stub.should_receive(:verify_env_and_upload)
+      uploader_double = double(Lob::Uploader)
+      Lob::Uploader.should_receive(:new).with('foo').and_return(uploader_double)
+      uploader_double.should_receive(:verify_env_and_upload)
 
       Lob.upload 'foo'
     end
