@@ -135,14 +135,8 @@ describe "Lob::Upload" do
         ENV.stub(:[]).with("FOG_DIRECTORY").and_return directory_name
       end
 
-      it "does not exit with an exit code of 1" do
-        lambda { @uploader.verify_env_variables }.should_not exit_with_code(1)
-      end
-
-      it "it reports that the missing env variable is required" do
-        Kernel.stub(:exit).and_return true
-        @uploader.should_not receive(:puts).with 'AWS_ACCESS_KEY required'
-        lambda { @uploader.verify_env_variables }
+      it "it does not raise an error" do
+        expect { @uploader.verify_env_variables }.not_to raise_error
       end
     end
   end
