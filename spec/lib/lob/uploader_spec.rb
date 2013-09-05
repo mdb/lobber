@@ -163,11 +163,20 @@ describe "Lob::Upload" do
   end
 
   describe "#fog_directory" do
-    it "returns the value of the FOG_DIRECTORY environment variable" do
-      some_uploader = Lob::Uploader.new 'foo'
-      ENV.stub(:[])
-      ENV.should_receive(:[]).with 'FOG_DIRECTORY'
-      some_uploader.fog_directory
+    context "the uploader is not instantiated with a bucket name parameter" do
+      it "returns the value of the FOG_DIRECTORY environment variable" do
+        some_uploader = Lob::Uploader.new 'foo'
+        ENV.stub(:[])
+        ENV.should_receive(:[]).with 'FOG_DIRECTORY'
+        some_uploader.fog_directory
+      end
+    end
+
+    context "the uploader is instantiated with a bucket name parameter" do
+      it "returns the value of the bucket name it was passed on instantiation" do
+        some_uploader = Lob::Uploader.new 'foo', 'bar'
+        some_uploader.fog_directory.should eq 'bar'
+      end
     end
   end
 end

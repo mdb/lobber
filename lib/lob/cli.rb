@@ -5,9 +5,10 @@ module Lob
     default_task :lob
 
     desc "DIRECTORY", "Upload a directory to Amazon S3"
+    option :bucket
     def lob(directory=nil)
       return usage unless directory
-      upload directory
+      upload(directory, options[:bucket])
     end
 
     desc "usage", "Display usage banner", hide: true
@@ -23,8 +24,8 @@ module Lob
     end
 
     no_tasks do
-      def upload(directory)
-        Lob.upload directory
+      def upload(directory, bucket=nil)
+        Lob.upload directory, bucket
       end
     end
   end

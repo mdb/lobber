@@ -3,9 +3,10 @@ require 'rake'
 
 module Lob
   class Uploader
-    attr_reader :directory
+    attr_reader :directory, :bucket_name
 
-    def initialize(directory)
+    def initialize(directory, bucket=nil)
+      @bucket_name = bucket
       @directory = directory
     end
 
@@ -79,7 +80,7 @@ module Lob
     end
 
     def fog_directory
-      ENV['FOG_DIRECTORY']
+      @bucket_name || ENV['FOG_DIRECTORY']
     end
   end
 end
