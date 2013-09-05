@@ -123,10 +123,8 @@ describe "Lob::Upload" do
         ENV.stub(:[])
       end
 
-      it "exits with an exit code of 1 & reports that the missing environment variable is required" do
-        #Kernel.should_receive(:puts).with 'AWS_ACCESS_KEY required'
-        #TODO: how to test? maybe create errors.rb like bershelf
-        expect { @uploader.verify_env_variables }.to exit_with_code(1)
+      it "raises an error reporting that the missing environment variable is required" do
+        expect { @uploader.verify_env_variables }.to raise_error(RuntimeError, 'AWS_ACCESS_KEY environment variable required')
       end
     end
 

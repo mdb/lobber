@@ -61,8 +61,7 @@ module Lob
     def verify_env_variables
       required_env_variables.each do |env_variable|
         unless ENV[env_variable]
-          puts "#{env_variable} required"
-          exit 1
+          raise "#{env_variable} environment variable required"
         end
       end
     end
