@@ -21,6 +21,18 @@ describe Lob::CLI do
     FileUtils.rm_rf tmpdir
   end
 
+  describe "#lob" do
+    it "returns #usage if it is not passed a directory" do
+      cli.should_receive(:usage).exactly(1).times
+      cli.lob
+    end
+
+    it "uploads with the proper options if it is passed a directory" do
+      cli.should_receive(:upload).with("foo", nil)
+      cli.lob "foo"
+    end
+  end
+
   describe "#usage" do
     subject(:usage) { cli.usage }
 
