@@ -22,12 +22,19 @@ describe Lob::CLI do
   end
 
   describe "#lob" do
-    it "returns #usage if it is not passed a directory" do
+    it "returns #usage if it is not passed any arguments" do
       cli.should_receive(:usage).exactly(1).times
       cli.lob
     end
 
+    it "reports that it was passed an invalid directory if it's passed a directory that does not exist" do
+      File.stub(:directory?).and_return false
+      cli.should_receive(:error).with("foo is not a valid directory")
+      cli.lob 'foo'
+    end
+
     it "uploads with the proper options if it is passed a directory" do
+      File.stub(:directory?).and_return true
       cli.should_receive(:upload).with("foo", nil)
       cli.lob "foo"
     end
@@ -36,8 +43,10 @@ describe Lob::CLI do
   describe "#usage" do
     subject(:usage) { cli.usage }
 
-    it "displays a banner and help" do
-      cli.should_receive(:puts).exactly(2).times
+    it "displays version info, GitHub info, and help" do
+      cli.should_receive(:say).with('Lob 0.0.1')
+      cli.should_receive(:say).with('https://github.com/mdb/lob')
+      cli.should_receive(:say).with("\n")
       cli.should_receive(:help)
 
       usage
@@ -51,7 +60,9 @@ describe Lob::CLI do
       ENV.stub(:[]).and_return 'foo'
     end
 
-    it "uploads" do
+    it "uploads and reports that it's successfully done so with green output" do
+      cli.stub(:say)
+      cli.should_receive(:say).with("Successfully uploaded #{tmpdir}", "\e[32m")
       upload
     end
   end
