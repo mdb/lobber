@@ -14,6 +14,10 @@ Quickly toss a directory to Amazon S3 from the command line.
 
     lob some_directory
 
+Or pass in a bucket name to substitute your $FOG_DIRECTORY env variable:
+
+    lob some_directory --bucket some_aws_bucket
+
 ## Required Environment Variables
 
 * AWS_ACCESS_KEY=your_aws_access_key
