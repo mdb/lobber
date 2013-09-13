@@ -8,9 +8,15 @@ module Lob
     option :bucket
     def lob(directory = nil)
       return usage unless directory
-      return report_invalid_directory(directory) unless File.directory?(directory)
 
-      upload(directory, options[:bucket])
+      unless File.directory? directory
+        error "#{directory} is not a valid directory"
+        exit 1
+      end
+
+      Lob.upload(directory, options[:bucket])
+
+      say "Successfully uploaded #{directory}", "\033[32m"
     end
 
     desc "usage", "Display usage banner", hide: true
@@ -20,21 +26,6 @@ module Lob
       say "\n"
 
       help
-    end
-
-    no_tasks do
-      def upload(directory, bucket=nil)
-        Lob.upload directory, bucket
-        report_success directory
-      end
-
-      def report_success(directory)
-        say "Successfully uploaded #{directory}", "\033[32m"
-      end
-
-      def report_invalid_directory(directory)
-        error "#{directory} is not a valid directory"
-      end
     end
   end
 end

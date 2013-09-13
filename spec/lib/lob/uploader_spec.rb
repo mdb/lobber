@@ -19,24 +19,16 @@ describe "Lob::Upload" do
     Lob::Uploader.class.should eq Class
   end
 
-  describe "#verify_env_and_upload" do
+  describe "#upload" do
     before :each do
       @uploader.stub(:verify_env_variables).and_return(true)
-      @uploader.stub(:upload).and_return(true)
     end
 
-    it "verifies that necessary environment variables are present" do
-      @uploader.should_receive(:verify_env_variables)
-      @uploader.verify_env_and_upload
+    it "verifies necessary environment variables" do
+      @uploader.should_receive :verify_env_variables
+      @uploader.upload
     end
 
-    it "calls #upload" do
-      @uploader.should_receive(:upload)
-      @uploader.verify_env_and_upload
-    end
-  end
-
-  describe "#upload" do
     it "calls #create_file_or_directory with each file or directory in the directory" do
       @uploader.stub(:directory_content).and_return 'foo' => 'bar', 'baz' => 'bim'
       @uploader.should_receive(:create_file_or_directory).with('foo', 'bar')
@@ -54,16 +46,18 @@ describe "Lob::Upload" do
         "spec/lib/lob/uploader_spec.rb" => "content",
         "spec/lib/lob/cli_spec.rb" => "content",
         "spec/lib/lob_spec.rb" => "content",
-        "spec/spec_helper.rb" => "content"
+        "spec/spec_helper.rb" => "content",
+        "spec/support/" => :directory,
+        "spec/support/matchers/" => :directory,
+        "spec/support/matchers/exit_with_code.rb" => "content"
       )
     end
   end
 
   describe "#bucket" do
     it "creates a bucket of the same name" do
-      expect(@uploader.s3.directories.get directory_name).to be_nil
-      @uploader.bucket
-      expect(@uploader.s3.directories.get directory_name).to_not be_nil
+      @uploader.bucket.class.should eq Fog::Storage::AWS::Directory
+      @uploader.bucket.key.should eq 'some_directory'
     end
   end
 

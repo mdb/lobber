@@ -5,17 +5,13 @@ module Lob
   class Uploader
     attr_reader :directory, :bucket_name
 
-    def initialize(directory, bucket=nil)
-      @bucket_name = bucket
+    def initialize(directory, bucket_name = nil)
+      @bucket_name = bucket_name
       @directory = directory
     end
 
-    def verify_env_and_upload
-      verify_env_variables
-      upload
-    end
-
     def upload
+      verify_env_variables
       directory_content.each do |file, value|
         create_file_or_directory(file, value)
       end

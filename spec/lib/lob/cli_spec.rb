@@ -22,21 +22,37 @@ describe Lob::CLI do
   end
 
   describe "#lob" do
-    it "returns #usage if it is not passed any arguments" do
-      cli.should_receive(:usage).exactly(1).times
-      cli.lob
+    context "it's not passed any arguments" do
+      it "returns usage details" do
+        cli.should_receive(:usage).exactly(1).times
+        cli.lob
+      end
     end
 
-    it "reports that it was passed an invalid directory if it's passed a directory that does not exist" do
-      File.stub(:directory?).and_return false
-      cli.should_receive(:error).with("foo is not a valid directory")
-      cli.lob 'foo'
+    context "it's passed a directory that does not exist" do
+      it "reports that it was passed an invalid directory and exits with an exit code of 1" do
+        Kernel.stub(:exit).and_return true
+        File.stub(:directory?).and_return false
+        cli.should_receive(:error).with("foo is not a valid directory")
+        lambda { cli.lob 'foo' }.should exit_with_code(1)
+      end
     end
 
-    it "uploads with the proper options if it is passed a directory" do
-      File.stub(:directory?).and_return true
-      cli.should_receive(:upload).with("foo", nil)
-      cli.lob "foo"
+    context "when it's passed a valid directory" do
+      before :each do
+        ENV.stub(:[]).and_return true
+        File.stub(:directory?).and_return true
+      end
+
+      it "uploads" do
+        Lob.should_receive(:upload).with("foo", nil)
+        cli.lob "foo"
+      end
+
+      it "reports that the directory has been successfully uploaded" do
+        cli.should_receive(:say).with("Successfully uploaded foo", "\e[32m")
+        cli.lob "foo"
+      end
     end
   end
 
@@ -50,20 +66,6 @@ describe Lob::CLI do
       cli.should_receive(:help)
 
       usage
-    end
-  end
-
-  describe "#upload" do
-    subject(:upload) { cli.upload(tmpdir) }
-
-    before do
-      ENV.stub(:[]).and_return 'foo'
-    end
-
-    it "uploads and reports that it's successfully done so with green output" do
-      cli.stub(:say)
-      cli.should_receive(:say).with("Successfully uploaded #{tmpdir}", "\e[32m")
-      upload
     end
   end
 end

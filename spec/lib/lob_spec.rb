@@ -13,7 +13,7 @@ describe Lob do
     context "it is only passed a directory name, and not an S3 bucket name" do
       it "verifies environment variables and uploads the directory and its contents to S3" do
         Lob::Uploader.should_receive(:new).with('foo', nil).and_return(@uploader_double)
-        @uploader_double.should_receive(:verify_env_and_upload)
+        @uploader_double.should_receive(:upload)
 
         Lob.upload 'foo'
       end
@@ -22,7 +22,7 @@ describe Lob do
     context "it is passed a directory name and an S3 bucket name" do
       it "verifies environment variables and uploads the directory and its contents to the specified S3 bucket" do
         Lob::Uploader.should_receive(:new).with('foo', 'bar').and_return(@uploader_double)
-        @uploader_double.should_receive(:verify_env_and_upload)
+        @uploader_double.should_receive(:upload)
 
         Lob.upload 'foo', 'bar'
       end
