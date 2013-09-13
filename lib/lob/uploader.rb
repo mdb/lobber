@@ -56,15 +56,15 @@ module Lob
     end
 
     def verify_env_variables
-      required_env_variables.each do |env_variable|
-        unless ENV[env_variable]
-          raise "#{env_variable} environment variable required"
-        end
-      end
-    end
+      missing = []
 
-    def required_env_variables
-      ['AWS_ACCESS_KEY', 'AWS_SECRET_KEY', 'FOG_DIRECTORY']
+      missing << 'AWS_ACCESS_KEY' unless aws_access_key
+      missing << 'AWS_SECRET_KEY' unless aws_secret_key
+      missing << 'FOG_DIRECTORY' unless fog_directory
+
+      return true if missing.empty?
+
+      raise "Required environment variables missing: #{missing.inspect}"
     end
 
     def aws_access_key

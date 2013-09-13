@@ -110,31 +110,26 @@ describe "Lob::Upload" do
 
   describe "#verify_env_variables" do
     context "when one of the required environment variables is absent" do
-      before :each do
-        ENV.stub(:[])
-      end
-
       it "raises an error reporting that the missing environment variable is required" do
-        expect { @uploader.verify_env_variables }.to raise_error(RuntimeError, 'AWS_ACCESS_KEY environment variable required')
+        @uploader.stub(:aws_access_key).and_return nil
+        expect { @uploader.verify_env_variables }.to raise_error(RuntimeError, 'Required environment variables missing: ["AWS_ACCESS_KEY"]')
       end
     end
 
     context "when all of the required environment variables are defined" do
       before :each do
-        ENV.stub(:[]).with("AWS_SECRET_KEY").and_return 'secret key'
-        ENV.stub(:[]).with("AWS_ACCESS_KEY").and_return 'access key'
-        ENV.stub(:[]).with("FOG_DIRECTORY").and_return directory_name
+        @uploader.stub(:aws_access_key).and_return true
+        @uploader.stub(:aws_secret_key).and_return true
+        @uploader.stub(:fog_directory).and_return true
       end
 
       it "it does not raise an error" do
         expect { @uploader.verify_env_variables }.not_to raise_error
       end
-    end
-  end
 
-  describe "#required_env_variables" do
-    it "returns an array of the required env variables" do
-      @uploader.required_env_variables.should eq ['AWS_ACCESS_KEY', 'AWS_SECRET_KEY', 'FOG_DIRECTORY']
+      it "returns true" do
+        @uploader.verify_env_variables.should eq true
+      end
     end
   end
 
