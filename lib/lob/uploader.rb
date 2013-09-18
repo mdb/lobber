@@ -18,13 +18,17 @@ module Lob
     end
 
     def directory_content
-      return Rake::FileList["#{directory}/**/*"].inject({}) do |hash, path|
-        if File.directory? path
-          hash.update("#{path}/" => :directory)
+      hash = {}
+
+      Rake::FileList["#{directory}/**/*"].each do |path|
+        if File.directory?(path)
+          hash["#{path}/"] = :directory
         else
-          hash.update(path => File.read(path))
+          hash[path] = File.read(path)
         end
       end
+
+      hash
     end
 
     def bucket
