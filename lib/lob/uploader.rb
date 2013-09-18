@@ -7,7 +7,7 @@ module Lob
 
     def initialize(directory, bucket_name = nil)
       @bucket_name = bucket_name
-      @directory = directory
+      @directory = sanitize(directory)
     end
 
     def upload
@@ -77,6 +77,16 @@ module Lob
 
     def fog_directory
       @bucket_name || ENV['FOG_DIRECTORY']
+    end
+
+    private
+
+    def sanitize(directory_path)
+      if directory_path.match(/\/$/)
+        directory_path.chop
+      else
+        directory_path
+      end
     end
   end
 end
