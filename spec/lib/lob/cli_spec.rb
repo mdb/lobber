@@ -14,6 +14,7 @@ describe Lob::CLI do
   before do
     Fog.mock!
     File.open(input_filename, 'w') {|file| file.write some_file }
+    cli.stub :say
   end
 
   after do
