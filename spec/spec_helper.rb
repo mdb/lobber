@@ -1,7 +1,5 @@
-require 'rubygems'
 require 'bundler/setup'
-require 'simplecov'
-require 'rspec'
+Bundler.require(:development)
 
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
