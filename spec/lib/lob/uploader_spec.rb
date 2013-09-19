@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Lob::Upload" do
+describe Lob::Uploader do
   let(:directory_name) { 'some_directory' }
 
   before :each do
