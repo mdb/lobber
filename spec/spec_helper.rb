@@ -5,7 +5,7 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].e
 
 SimpleCov.start
 
-require 'lob'
+require 'lobber'
 
 RSpec.configure do |config|
  #some (optional) config here

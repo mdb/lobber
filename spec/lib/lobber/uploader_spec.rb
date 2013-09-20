@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Lob::Uploader do
+describe Lobber::Uploader do
   let(:directory_name) { 'spec' }
-  let(:uploader) { Lob::Uploader.new(directory_name) }
+  let(:uploader) { Lobber::Uploader.new(directory_name) }
 
   before :each do
     Fog.mock!
@@ -16,7 +16,7 @@ describe Lob::Uploader do
   end
 
   it "exists as a class within the Lob module" do
-    Lob::Uploader.class.should eq Class
+    Lobber::Uploader.class.should eq Class
   end
 
   describe "#upload" do
@@ -42,10 +42,10 @@ describe Lob::Uploader do
       File.stub(:read).and_return 'content'
       uploader.directory_content.should eq(
         "spec/lib/" => :directory,
-        "spec/lib/lob/" => :directory,
-        "spec/lib/lob/uploader_spec.rb" => "content",
-        "spec/lib/lob/cli_spec.rb" => "content",
-        "spec/lib/lob_spec.rb" => "content",
+        "spec/lib/lobber/" => :directory,
+        "spec/lib/lobber/uploader_spec.rb" => "content",
+        "spec/lib/lobber/cli_spec.rb" => "content",
+        "spec/lib/lobber_spec.rb" => "content",
         "spec/spec_helper.rb" => "content",
         "spec/support/" => :directory,
         "spec/support/matchers/" => :directory,
@@ -135,7 +135,7 @@ describe Lob::Uploader do
 
   describe "#aws_access_key" do
     it "returns the value of the AWS_ACCESS_KEY environment variable" do
-      some_uploader = Lob::Uploader.new 'foo'
+      some_uploader = Lobber::Uploader.new 'foo'
       ENV.stub(:[])
       ENV.should_receive(:[]).with 'AWS_ACCESS_KEY'
       some_uploader.aws_access_key
@@ -144,7 +144,7 @@ describe Lob::Uploader do
 
   describe "#aws_secret_key" do
     it "returns the value of the AWS_ACCESS_KEY environment variable" do
-      some_uploader = Lob::Uploader.new 'foo'
+      some_uploader = Lobber::Uploader.new 'foo'
       ENV.stub(:[])
       ENV.should_receive(:[]).with 'AWS_SECRET_KEY'
       some_uploader.aws_secret_key
@@ -154,7 +154,7 @@ describe Lob::Uploader do
   describe "#fog_directory" do
     context "the uploader is not instantiated with a bucket name parameter" do
       it "returns the value of the FOG_DIRECTORY environment variable" do
-        some_uploader = Lob::Uploader.new 'foo'
+        some_uploader = Lobber::Uploader.new 'foo'
         ENV.stub(:[])
         ENV.should_receive(:[]).with 'FOG_DIRECTORY'
         some_uploader.fog_directory
@@ -163,7 +163,7 @@ describe Lob::Uploader do
 
     context "the uploader is instantiated with a bucket name parameter" do
       it "returns the value of the bucket name it was passed on instantiation" do
-        some_uploader = Lob::Uploader.new 'foo', 'bar'
+        some_uploader = Lobber::Uploader.new 'foo', 'bar'
         some_uploader.fog_directory.should eq 'bar'
       end
     end

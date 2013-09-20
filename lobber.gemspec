@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'lob/version'
+require 'lobber/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "lob"
-  spec.version       = Lob::VERSION
+  spec.name          = "lobber"
+  spec.version       = Lobber::VERSION
   spec.authors       = ["Mike Ball"]
   spec.email         = ["mikedball@gmail.com"]
   spec.description   = %q{A commandline tool to quickly push a directory to AWS S3}

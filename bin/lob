@@ -2,7 +2,7 @@
 
 $: << File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
 
-require 'lob'
+require 'lobber'
 
 ARGV.unshift(:lob) if ARGV[0]
 
