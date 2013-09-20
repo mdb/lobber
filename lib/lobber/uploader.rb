@@ -1,7 +1,7 @@
 require 'fog'
 require 'rake'
 
-module Lob
+module Lobber
   class Uploader
     attr_reader :directory, :bucket_name
 

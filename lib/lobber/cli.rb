@@ -1,6 +1,6 @@
 require 'thor'
 
-module Lob
+module Lobber
   class CLI < Thor
     default_task :lob
 
@@ -14,14 +14,14 @@ module Lob
         exit 1
       end
 
-      Lob.upload(directory, options[:bucket])
+      Lobber.upload(directory, options[:bucket])
 
       say "Successfully uploaded #{directory}", "\033[32m"
     end
 
     desc "usage", "Display usage banner", hide: true
     def usage
-      say "Lob #{Lob::VERSION}"
+      say "Lobber #{Lobber::VERSION}"
       say "https://github.com/mdb/lob"
       say "\n"
 

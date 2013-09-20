@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'fileutils'
 require 'tmpdir'
 
-describe Lob::CLI do
+describe Lobber::CLI do
   subject { cli }
   let(:cli) { described_class.new }
 
@@ -46,7 +46,7 @@ describe Lob::CLI do
       end
 
       it "uploads" do
-        Lob.should_receive(:upload).with("foo", nil)
+        Lobber.should_receive(:upload).with("foo", nil)
         cli.lob "foo"
       end
 
@@ -61,7 +61,7 @@ describe Lob::CLI do
     subject(:usage) { cli.usage }
 
     it "displays version info, GitHub info, and help" do
-      cli.should_receive(:say).with('Lob 0.0.1')
+      cli.should_receive(:say).with('Lobber 0.0.1')
       cli.should_receive(:say).with('https://github.com/mdb/lob')
       cli.should_receive(:say).with("\n")
       cli.should_receive(:help)
