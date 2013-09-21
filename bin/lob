@@ -6,4 +6,4 @@ require 'lobber'
 
 ARGV.unshift(:lob) if ARGV[0]
 
-Lob::CLI.start
+Lobber::CLI.start
