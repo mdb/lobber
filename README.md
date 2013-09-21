@@ -1,13 +1,13 @@
-[![Build Status](https://travis-ci.org/mdb/lob.png?branch=master)](https://travis-ci.org/mdb/lob)
+[![Build Status](https://travis-ci.org/mdb/lobber.png?branch=master)](https://travis-ci.org/mdb/lobber)
 
-# Lob
+# Lobber
 
 Quickly toss a directory to Amazon S3 from the command line.
 
 ## Installation
 
-    git clone https://github.com/mdb/lob
-    cd lob
+    git clone https://github.com/mdb/lobber
+    cd lobber
     rake install
 
 ## Usage
