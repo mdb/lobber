@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["mikedball@gmail.com"]
   spec.description   = %q{A commandline tool to quickly push a directory to AWS S3}
   spec.summary       = %q{Toss a directory to AWS S3}
-  spec.homepage      = "http://github.com/mdb/lob"
+  spec.homepage      = "http://github.com/mdb/lobber"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
