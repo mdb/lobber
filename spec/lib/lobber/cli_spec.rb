@@ -61,7 +61,7 @@ describe Lobber::CLI do
     subject(:usage) { cli.usage }
 
     it "displays version info, GitHub info, and help" do
-      cli.should_receive(:say).with('Lobber 0.0.1')
+      cli.should_receive(:say).with('Lobber 0.0.2')
       cli.should_receive(:say).with('https://github.com/mdb/lob')
       cli.should_receive(:say).with("\n")
       cli.should_receive(:help)
