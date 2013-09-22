@@ -6,9 +6,7 @@ Quickly toss a directory to Amazon S3 from the command line.
 
 ## Installation
 
-    git clone https://github.com/mdb/lobber
-    cd lobber
-    rake install
+    gem install lobber
 
 ## Usage
 
