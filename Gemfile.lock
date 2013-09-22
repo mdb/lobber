@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lobber (0.0.2)
+    lobber (0.0.3)
       fog
       thor
 
