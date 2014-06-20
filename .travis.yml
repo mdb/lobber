@@ -3,4 +3,3 @@ rvm:
   - "2.0"
   - "ruby-head"
   - "jruby-head"
-script: rake
