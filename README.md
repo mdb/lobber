@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/mdb/lobber.png?branch=master)](https://travis-ci.org/mdb/lobber)
+[![Code Climate](https://codeclimate.com/github/mdb/lobber/badges/gpa.svg)](https://codeclimate.com/github/mdb/lobber)
 
 # Lobber
 
