@@ -48,7 +48,8 @@ module Lobber
     end
 
     def create_file file
-      bucket.files.create(key: file, public: true, body: File.open(file))
+      key = File.basename(file)
+      bucket.files.create(key: key, public: true, body: File.open(file))
     end
 
     def s3

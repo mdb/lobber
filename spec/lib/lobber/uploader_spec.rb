@@ -87,8 +87,10 @@ describe Lobber::Uploader do
   describe "#create_file" do
     it "creates an s3 file" do
       allow(File).to receive(:open).and_return 'content'
-      expect(uploader.bucket.files).to receive(:create).with(key: 'foo', public: true, body: 'content')
-      uploader.create_file "foo"
+      expect(uploader.bucket.files)
+        .to receive(:create)
+        .with(key: 'foo.bar', public: true, body: 'content')
+      uploader.create_file "/home/foo.bar"
     end
   end
 
