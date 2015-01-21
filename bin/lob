@@ -4,6 +4,6 @@ $: << File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
 
 require 'lobber'
 
-ARGV.unshift(:lob) if ARGV[0]
+ARGV.unshift('lob') if ARGV[0]
 
 Lobber::CLI.start
