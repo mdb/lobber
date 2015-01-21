@@ -10,6 +10,7 @@ describe Lobber::Uploader do
     Fog.mock!
     allow(uploader).to receive(:aws_access_key).and_return 'fake key'
     allow(uploader).to receive(:aws_secret_key).and_return 'fake key'
+    allow(uploader).to receive(:verbose).and_return false
     allow(ENV).to receive(:[])
     allow(ENV).to receive(:[]).with('FOG_DIRECTORY').and_return directory_name
   end

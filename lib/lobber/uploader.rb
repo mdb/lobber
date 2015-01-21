@@ -3,12 +3,13 @@ require 'rake'
 
 module Lobber
   class Uploader
-    attr_reader :directory, :bucket_name
+    attr_reader :directory, :bucket_name, :verbose
 
     def initialize(directory, options = {})
       @directory = sanitize(directory)
 
-      @bucket_name = options[:bucket_name]
+      @bucket_name = options.fetch(:bucket_name, nil)
+      @verbose = options.fetch(:verbose, true)
     end
 
     def upload
@@ -49,6 +50,7 @@ module Lobber
     end
 
     def create_file file
+      log file
       key = File.basename(file)
       bucket.files.create(key: key, public: true, body: File.open(file))
     end
@@ -86,6 +88,10 @@ module Lobber
     end
 
     private
+
+    def log(text)
+      puts text if verbose
+    end
 
     def sanitize(directory_path)
       if directory_path.match(/\/$/)
