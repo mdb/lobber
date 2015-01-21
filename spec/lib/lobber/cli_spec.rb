@@ -66,7 +66,7 @@ describe Lobber::CLI do
     subject(:usage) { cli.usage }
 
     it "displays version info, GitHub info, and help" do
-      expect(cli).to receive(:say).with('Lobber 0.0.4')
+      expect(cli).to receive(:say).with('Lobber 0.0.5')
       expect(cli).to receive(:say).with('https://github.com/mdb/lob')
       expect(cli).to receive(:say).with("\n")
       expect(cli).to receive(:help)
