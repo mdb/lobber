@@ -5,7 +5,9 @@ module Lobber
     default_task :lob
 
     desc "DIRECTORY", "Upload a directory to Amazon S3"
-    option :bucket
+    method_option :bucket, type: :string
+    method_option :dry_run, default: false, type: :boolean
+    method_option :verbose, default: true, type: :boolean
     def lob(directory = nil)
       return usage unless directory
 
