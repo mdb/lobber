@@ -155,9 +155,21 @@ describe Lobber::Uploader do
       expect(Fog::Storage).to receive(:new).with(
         provider: :aws,
         aws_access_key_id: 'aws_access_key',
-        aws_secret_access_key: 'aws_secret_key'
+        aws_secret_access_key: 'aws_secret_key',
+        path_style: false
       )
       uploader.s3
+    end
+
+    context "with a fog directory that includes a period" do
+      let(:directory_name) { "foo.bar" }
+
+      it "sets path style to true to silence warnings" do
+        expect(Fog::Storage).to receive(:new) do |options|
+          expect(options[:path_style]).to eq(true)
+        end
+        uploader.s3
+      end
     end
   end
 
