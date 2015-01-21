@@ -8,7 +8,7 @@ module Lobber
     def initialize(directory, options = {})
       @directory = sanitize(directory)
 
-      @bucket_name = options.fetch(:bucket_name, nil)
+      @bucket_name = options.fetch(:bucket, nil)
       @verbose = options.fetch(:verbose, true)
     end
 

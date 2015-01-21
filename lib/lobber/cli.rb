@@ -14,7 +14,7 @@ module Lobber
         exit 1
       end
 
-      Lobber.upload(directory, options[:bucket])
+      Lobber.upload(directory, options)
 
       say "Successfully uploaded #{directory}", "\033[32m"
     end

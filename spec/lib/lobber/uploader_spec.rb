@@ -187,7 +187,7 @@ describe Lobber::Uploader do
     end
 
     context "the uploader is instantiated with a bucket name parameter" do
-      let(:options) { { bucket_name: 'bar' } }
+      let(:options) { { bucket: 'bar' } }
 
       it "returns the value of the bucket name it was passed on instantiation" do
         expect(uploader.fog_directory).to eq('bar')
