@@ -107,6 +107,17 @@ describe Lobber::Uploader do
       uploader.create_file filename
     end
 
+    context "when the local and remote file are identical" do
+      before do
+        allow(uploader).to receive(:already_identical?).and_return(true)
+      end
+
+      it "does not upload the file again" do
+        expect(uploader.bucket.files).to_not receive(:create)
+        uploader.create_file filename
+      end
+    end
+
     context "with --dry-run" do
       let(:options) { { 'dry_run' => true } }
 

@@ -53,6 +53,12 @@ module Lobber
 
     def create_file file
       key = Pathname.new(file).relative_path_from(Pathname.new(directory)).to_s
+
+      if already_identical?(file, key)
+        log "#{file} identical"
+        return
+      end
+
       log file, key
       return if dry_run
       bucket.files.create(key: key, public: true, body: File.open(file))
@@ -91,6 +97,11 @@ module Lobber
     end
 
     private
+
+    def already_identical?(file, key)
+      remote_file = bucket.files.head(key)
+      remote_file && Digest::MD5.hexdigest(File.read(file)) == remote_file.etag
+    end
 
     def log(*strings)
       puts strings.join(' -> ') if verbose
