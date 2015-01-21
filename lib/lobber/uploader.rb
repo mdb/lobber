@@ -50,8 +50,8 @@ module Lobber
     end
 
     def create_file file
-      log file
       key = Pathname.new(file).relative_path_from(Pathname.new(directory)).to_s
+      log file, key
       bucket.files.create(key: key, public: true, body: File.open(file))
     end
 
@@ -89,8 +89,8 @@ module Lobber
 
     private
 
-    def log(text)
-      puts text if verbose
+    def log(*strings)
+      puts strings.join(' -> ') if verbose
     end
 
     def sanitize(directory_path)

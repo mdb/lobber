@@ -103,7 +103,7 @@ describe Lobber::Uploader do
     end
 
     it "logs each file to the screen" do
-      expect(uploader).to receive(:log).with(filename)
+      expect(uploader).to receive(:log).with(filename, 'foo.bar')
       uploader.create_file filename
     end
 
