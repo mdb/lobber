@@ -88,12 +88,34 @@ describe Lobber::Uploader do
   end
 
   describe "#create_file" do
-    it "creates an s3 file" do
+    before do
       allow(File).to receive(:open).and_return 'content'
+    end
+
+    let(:filename) { 'foo.bar' }
+
+    it "creates an s3 file" do
       expect(uploader.bucket.files)
         .to receive(:create)
-        .with(key: 'foo.bar', public: true, body: 'content')
-      uploader.create_file "/home/foo.bar"
+        .with(key: filename, public: true, body: 'content')
+      uploader.create_file filename
+    end
+
+    it "logs each file to the screen" do
+      expect(uploader).to receive(:log).with(filename)
+      uploader.create_file filename
+    end
+
+    context "with a directory outside of the working path" do
+      let(:directory_name) { '/home/' }
+      let(:filename) { '/home/foo/bar.baz' }
+
+      it "strips the directory name from the upload key" do
+        expect(uploader.bucket.files)
+          .to receive(:create)
+          .with(key: 'bar.baz', public: true, body: 'content')
+        uploader.create_file filename
+      end
     end
   end
 
