@@ -51,7 +51,7 @@ module Lobber
 
     def create_file file
       log file
-      key = File.basename(file)
+      key = Pathname.new(file).relative_path_from(Pathname.new(directory)).to_s
       bucket.files.create(key: key, public: true, body: File.open(file))
     end
 

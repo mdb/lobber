@@ -93,12 +93,12 @@ describe Lobber::Uploader do
       allow(File).to receive(:open).and_return 'content'
     end
 
-    let(:filename) { 'foo.bar' }
+    let(:filename) { File.join(directory_name, 'foo.bar') }
 
     it "creates an s3 file" do
       expect(uploader.bucket.files)
         .to receive(:create)
-        .with(key: filename, public: true, body: 'content')
+        .with(key: 'foo.bar', public: true, body: 'content')
       uploader.create_file filename
     end
 
@@ -114,7 +114,7 @@ describe Lobber::Uploader do
       it "strips the directory name from the upload key" do
         expect(uploader.bucket.files)
           .to receive(:create)
-          .with(key: 'bar.baz', public: true, body: 'content')
+          .with(key: 'foo/bar.baz', public: true, body: 'content')
         uploader.create_file filename
       end
     end
