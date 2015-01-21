@@ -107,6 +107,20 @@ describe Lobber::Uploader do
       uploader.create_file filename
     end
 
+    context "with --dry-run" do
+      let(:options) { { 'dry_run' => true } }
+
+      it "does not create directories" do
+        expect(uploader.bucket.files).to_not receive(:create)
+        uploader.create_directory directory_name
+      end
+
+      it "does not upload files" do
+        expect(uploader.bucket.files).to_not receive(:create)
+        uploader.create_file filename
+      end
+    end
+
     context "with a directory outside of the working path" do
       let(:directory_name) { '/home/' }
       let(:filename) { '/home/foo/bar.baz' }
@@ -187,7 +201,7 @@ describe Lobber::Uploader do
     end
 
     context "the uploader is instantiated with a bucket name parameter" do
-      let(:options) { { bucket: 'bar' } }
+      let(:options) { { 'bucket' => 'bar' } }
 
       it "returns the value of the bucket name it was passed on instantiation" do
         expect(uploader.fog_directory).to eq('bar')
