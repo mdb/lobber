@@ -3,11 +3,14 @@ require 'rake'
 
 module Lobber
   class Uploader
-    attr_reader :directory, :bucket_name
+    attr_reader :directory, :bucket_name, :dry_run, :verbose
 
-    def initialize(directory, bucket_name = nil)
-      @bucket_name = bucket_name
+    def initialize(directory, options = {})
       @directory = sanitize(directory)
+
+      @bucket_name = options.fetch('bucket', nil)
+      @dry_run = options.fetch('dry_run', false)
+      @verbose = options.fetch('verbose', true)
     end
 
     def upload
@@ -44,18 +47,29 @@ module Lobber
     end
 
     def create_directory directory
+      return if dry_run
       bucket.files.create(key: directory, public: true)
     end
 
     def create_file file
-      bucket.files.create(key: file, public: true, body: File.open(file))
+      key = Pathname.new(file).relative_path_from(Pathname.new(directory)).to_s
+
+      if already_identical?(file, key)
+        log "#{file} identical"
+        return
+      end
+
+      log file, key
+      return if dry_run
+      bucket.files.create(key: key, public: true, body: File.open(file))
     end
 
     def s3
       @s3 ||= Fog::Storage.new(
         provider: :aws,
         aws_access_key_id: aws_access_key,
-        aws_secret_access_key: aws_secret_key
+        aws_secret_access_key: aws_secret_key,
+        path_style: fog_directory.include?(?.)
       )
     end
 
@@ -80,10 +94,19 @@ module Lobber
     end
 
     def fog_directory
-      @bucket_name || ENV['FOG_DIRECTORY']
+      bucket_name || ENV['FOG_DIRECTORY']
     end
 
     private
+
+    def already_identical?(file, key)
+      remote_file = bucket.files.head(key)
+      remote_file && Digest::MD5.hexdigest(File.read(file)) == remote_file.etag
+    end
+
+    def log(*strings)
+      puts strings.join(' -> ') if verbose
+    end
 
     def sanitize(directory_path)
       if directory_path.match(/\/$/)

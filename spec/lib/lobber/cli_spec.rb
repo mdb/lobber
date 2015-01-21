@@ -51,7 +51,7 @@ describe Lobber::CLI do
       end
 
       it "uploads" do
-        expect(Lobber).to receive(:upload).with("foo", nil)
+        expect(Lobber).to receive(:upload).with("foo", {})
         cli.lob "foo"
       end
 

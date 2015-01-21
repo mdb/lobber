@@ -1,14 +1,18 @@
 require 'spec_helper'
 
 describe Lobber::Uploader do
+  subject(:uploader) { Lobber::Uploader.new(directory_name, options) }
+
   let(:directory_name) { 'spec' }
-  let(:uploader) { Lobber::Uploader.new(directory_name) }
+  let(:options) { {} }
 
   before :each do
     Fog.mock!
     allow(uploader).to receive(:aws_access_key).and_return 'fake key'
     allow(uploader).to receive(:aws_secret_key).and_return 'fake key'
-    allow(uploader).to receive(:fog_directory).and_return directory_name
+    allow(uploader).to receive(:verbose).and_return false
+    allow(ENV).to receive(:[])
+    allow(ENV).to receive(:[]).with('FOG_DIRECTORY').and_return directory_name
   end
 
   after :each do
@@ -85,10 +89,59 @@ describe Lobber::Uploader do
   end
 
   describe "#create_file" do
-    it "creates an s3 file" do
+    before do
       allow(File).to receive(:open).and_return 'content'
-      expect(uploader.bucket.files).to receive(:create).with(key: 'foo', public: true, body: 'content')
-      uploader.create_file "foo"
+    end
+
+    let(:filename) { File.join(directory_name, 'foo.bar') }
+
+    it "creates an s3 file" do
+      expect(uploader.bucket.files)
+        .to receive(:create)
+        .with(key: 'foo.bar', public: true, body: 'content')
+      uploader.create_file filename
+    end
+
+    it "logs each file to the screen" do
+      expect(uploader).to receive(:log).with(filename, 'foo.bar')
+      uploader.create_file filename
+    end
+
+    context "when the local and remote file are identical" do
+      before do
+        allow(uploader).to receive(:already_identical?).and_return(true)
+      end
+
+      it "does not upload the file again" do
+        expect(uploader.bucket.files).to_not receive(:create)
+        uploader.create_file filename
+      end
+    end
+
+    context "with --dry-run" do
+      let(:options) { { 'dry_run' => true } }
+
+      it "does not create directories" do
+        expect(uploader.bucket.files).to_not receive(:create)
+        uploader.create_directory directory_name
+      end
+
+      it "does not upload files" do
+        expect(uploader.bucket.files).to_not receive(:create)
+        uploader.create_file filename
+      end
+    end
+
+    context "with a directory outside of the working path" do
+      let(:directory_name) { '/home/' }
+      let(:filename) { '/home/foo/bar.baz' }
+
+      it "strips the directory name from the upload key" do
+        expect(uploader.bucket.files)
+          .to receive(:create)
+          .with(key: 'foo/bar.baz', public: true, body: 'content')
+        uploader.create_file filename
+      end
     end
   end
 
@@ -102,9 +155,21 @@ describe Lobber::Uploader do
       expect(Fog::Storage).to receive(:new).with(
         provider: :aws,
         aws_access_key_id: 'aws_access_key',
-        aws_secret_access_key: 'aws_secret_key'
+        aws_secret_access_key: 'aws_secret_key',
+        path_style: false
       )
       uploader.s3
+    end
+
+    context "with a fog directory that includes a period" do
+      let(:directory_name) { "foo.bar" }
+
+      it "sets path style to true to silence warnings" do
+        expect(Fog::Storage).to receive(:new) do |options|
+          expect(options[:path_style]).to eq(true)
+        end
+        uploader.s3
+      end
     end
   end
 
@@ -154,17 +219,15 @@ describe Lobber::Uploader do
   describe "#fog_directory" do
     context "the uploader is not instantiated with a bucket name parameter" do
       it "returns the value of the FOG_DIRECTORY environment variable" do
-        some_uploader = Lobber::Uploader.new 'foo'
-        allow(ENV).to receive(:[])
-        expect(ENV).to receive(:[]).with 'FOG_DIRECTORY'
-        some_uploader.fog_directory
+        expect(uploader.fog_directory).to eq(directory_name)
       end
     end
 
     context "the uploader is instantiated with a bucket name parameter" do
+      let(:options) { { 'bucket' => 'bar' } }
+
       it "returns the value of the bucket name it was passed on instantiation" do
-        some_uploader = Lobber::Uploader.new 'foo', 'bar'
-        expect(some_uploader.fog_directory).to eq 'bar'
+        expect(uploader.fog_directory).to eq('bar')
       end
     end
   end
