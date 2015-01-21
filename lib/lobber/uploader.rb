@@ -5,9 +5,10 @@ module Lobber
   class Uploader
     attr_reader :directory, :bucket_name
 
-    def initialize(directory, bucket_name = nil)
-      @bucket_name = bucket_name
+    def initialize(directory, options = {})
       @directory = sanitize(directory)
+
+      @bucket_name = options[:bucket_name]
     end
 
     def upload
@@ -81,7 +82,7 @@ module Lobber
     end
 
     def fog_directory
-      @bucket_name || ENV['FOG_DIRECTORY']
+      bucket_name || ENV['FOG_DIRECTORY']
     end
 
     private

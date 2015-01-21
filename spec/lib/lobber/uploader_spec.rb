@@ -1,14 +1,17 @@
 require 'spec_helper'
 
 describe Lobber::Uploader do
+  subject(:uploader) { Lobber::Uploader.new(directory_name, options) }
+
   let(:directory_name) { 'spec' }
-  let(:uploader) { Lobber::Uploader.new(directory_name) }
+  let(:options) { {} }
 
   before :each do
     Fog.mock!
     allow(uploader).to receive(:aws_access_key).and_return 'fake key'
     allow(uploader).to receive(:aws_secret_key).and_return 'fake key'
-    allow(uploader).to receive(:fog_directory).and_return directory_name
+    allow(ENV).to receive(:[])
+    allow(ENV).to receive(:[]).with('FOG_DIRECTORY').and_return directory_name
   end
 
   after :each do
@@ -156,17 +159,15 @@ describe Lobber::Uploader do
   describe "#fog_directory" do
     context "the uploader is not instantiated with a bucket name parameter" do
       it "returns the value of the FOG_DIRECTORY environment variable" do
-        some_uploader = Lobber::Uploader.new 'foo'
-        allow(ENV).to receive(:[])
-        expect(ENV).to receive(:[]).with 'FOG_DIRECTORY'
-        some_uploader.fog_directory
+        expect(uploader.fog_directory).to eq(directory_name)
       end
     end
 
     context "the uploader is instantiated with a bucket name parameter" do
+      let(:options) { { bucket_name: 'bar' } }
+
       it "returns the value of the bucket name it was passed on instantiation" do
-        some_uploader = Lobber::Uploader.new 'foo', 'bar'
-        expect(some_uploader.fog_directory).to eq 'bar'
+        expect(uploader.fog_directory).to eq('bar')
       end
     end
   end
