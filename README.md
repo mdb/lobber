@@ -11,11 +11,22 @@ Quickly toss a directory to Amazon S3 from the command line.
 
 ## Usage
 
-    lob some_directory
+    $ lob some_directory
+    some_directory/index.html -> index.html
+    some_directory/stylesheets/application.css -> stylesheets/application.css
 
-Or pass in a bucket name to substitute your $FOG_DIRECTORY env variable:
+Pass in a bucket name to substitute your $FOG_DIRECTORY env variable:
 
-    lob some_directory --bucket some_aws_bucket
+    $ lob some_directory --bucket some_aws_bucket
+
+Set `--dry-run` to just see what files would be uploaded:
+
+    $ log some_directory --dry-run
+
+Set `--no-verbose` to suppress printing filenames while uploading:
+
+    $ log some_directory --no-verbose
+
 
 ## Required Environment Variables
 
